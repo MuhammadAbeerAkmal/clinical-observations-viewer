@@ -1,0 +1,118 @@
+<mxfile host="app.diagrams.net" version="21.0.0" type="device">
+  <diagram id="arch-overview" name="Architecture">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ═══════════════════ BROWSER LAYER ═══════════════════ -->
+        <mxCell id="browser" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Browser&lt;/b&gt; - React 19 - Mantine 8 - keycloak-js  (port 4200)"
+          style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;verticalAlign=top;spacingTop=8;"
+          vertex="1" parent="1">
+          <mxGeometry x="60" y="40" width="780" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pp" value="&lt;b&gt;PatientsPage&lt;/b&gt;&lt;br/&gt;name search - results table&lt;br/&gt;ARIA-labelled rows"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;"
+          vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="210" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pdp" value="&lt;b&gt;PatientDetailPage&lt;/b&gt;&lt;br/&gt;observations list&lt;br/&gt;Recharts LineChart over time"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;"
+          vertex="1" parent="1">
+          <mxGeometry x="510" y="100" width="290" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════ NESTJS API LAYER ═══════════════════ -->
+        <mxCell id="api" value="&lt;b style=&quot;font-size:14px;&quot;&gt;NestJS API&lt;/b&gt; - TypeScript - Passport-JWT - Swagger  (port 3000)"
+          style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;verticalAlign=top;spacingTop=8;"
+          vertex="1" parent="1">
+          <mxGeometry x="60" y="290" width="780" height="170" as="geometry" />
+        </mxCell>
+
+        <mxCell id="guard" value="&lt;b&gt;JwtAuthGuard&lt;/b&gt;&lt;br/&gt;APP_GUARD (global)&lt;br/&gt;passport-jwt - jwks-rsa"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=11;"
+          vertex="1" parent="1">
+          <mxGeometry x="100" y="350" width="210" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ctrl" value="&lt;b&gt;PatientsController&lt;/b&gt;&lt;br/&gt;GET /api/patients?name=…&lt;br/&gt;GET /api/patients/:id/observations"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=11;"
+          vertex="1" parent="1">
+          <mxGeometry x="380" y="350" width="280" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="svc" value="&lt;b&gt;PatientsService&lt;/b&gt;&lt;br/&gt;+ FhirHttpClient (Axios)&lt;br/&gt;mapBundle helpers (lib-server)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=11;"
+          vertex="1" parent="1">
+          <mxGeometry x="720" y="350" width="100" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════ EXTERNAL SERVICES ═══════════════════ -->
+        <mxCell id="fhir" value="&lt;b&gt;HAPI FHIR R4&lt;/b&gt;&lt;br/&gt;hapi.fhir.org/baseR4&lt;br/&gt;public - read-only"
+          style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d6b656;fontSize=12;fontStyle=0;"
+          vertex="1" parent="1">
+          <mxGeometry x="230" y="540" width="200" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="libdto" value="&lt;b&gt;lib-dto&lt;/b&gt; (shared)&lt;br/&gt;PatientDto - ObservationDto&lt;br/&gt;@ApiProperty decorators"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;"
+          vertex="1" parent="1">
+          <mxGeometry x="540" y="540" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="kc" value="&lt;b&gt;Keycloak&lt;/b&gt;  (port 8080)&lt;br/&gt;realm: clinical-demo&lt;br/&gt;client: clinical-ui (public)&lt;br/&gt;RS256 - JWKS endpoint"
+          style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;"
+          vertex="1" parent="1">
+          <mxGeometry x="920" y="130" width="210" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════ CONNECTIONS ═══════════════════ -->
+
+        <!-- Browser → NestJS API -->
+        <mxCell id="e-bearer" value="Bearer JWT"
+          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6c8ebf;fontColor=#006EAF;fontStyle=1;fontSize=11;"
+          edge="1" source="browser" target="api" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- NestJS API → HAPI FHIR -->
+        <mxCell id="e-fhir" value="Axios - application/fhir+json"
+          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#d6b656;fontColor=#a07500;fontStyle=1;fontSize=11;"
+          edge="1" source="api" target="fhir" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- lib-dto used by API -->
+        <mxCell id="e-dto-api" value="DTOs"
+          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#d6b656;fontColor=#a07500;dashed=1;endArrow=none;fontSize=11;"
+          edge="1" source="api" target="libdto" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- lib-dto used by browser -->
+        <mxCell id="e-dto-browser" value=""
+          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#d6b656;dashed=1;endArrow=none;"
+          edge="1" source="browser" target="libdto" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Browser → Keycloak: OIDC -->
+        <mxCell id="e-oidc" value="OIDC - PKCE S256"
+          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=1;fontSize=11;"
+          edge="1" source="browser" target="kc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- NestJS API → Keycloak: JWKS -->
+        <mxCell id="e-jwks" value="JWKS fetch (RS256)"
+          style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=3;dashed=1;fontSize=11;"
+          edge="1" source="api" target="kc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

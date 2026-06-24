@@ -1,0 +1,20 @@
+version: '3.9'
+
+# Local dev overrides - adds port mappings and volume mounts.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.local.yml up -d
+
+services:
+  keycloak:
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./dev/keycloak-realms:/opt/keycloak/data/import:ro
+    command: start-dev --import-realm
+
+  rest-clinical:
+    ports:
+      - '3000:3000'
+
+  ui-clinical:
+    ports:
+      - '4200:4200'

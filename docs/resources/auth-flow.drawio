@@ -1,0 +1,188 @@
+<mxfile host="app.diagrams.net" version="21.0.0" type="device">
+  <diagram id="auth-flow" name="Auth Flow (OIDC PKCE S256)">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ═══════════════════ TITLE ═══════════════════ -->
+        <mxCell id="title" value="OIDC PKCE S256 - Authentication Flow"
+          style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════ ACTOR BOXES ═══════════════════ -->
+        <mxCell id="a-browser" value="Browser&lt;br/&gt;(keycloak-js)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;"
+          vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="140" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a-kc" value="Keycloak&lt;br/&gt;(port 8080)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=13;"
+          vertex="1" parent="1">
+          <mxGeometry x="480" y="80" width="140" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a-api" value="NestJS API&lt;br/&gt;(port 3000)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;"
+          vertex="1" parent="1">
+          <mxGeometry x="880" y="80" width="140" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════ LIFELINES ═══════════════════ -->
+        <mxCell id="ll-browser" value=""
+          style="endArrow=none;dashed=1;html=1;strokeColor=#6c8ebf;strokeWidth=2;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="135" as="sourcePoint" />
+            <mxPoint x="150" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ll-kc" value=""
+          style="endArrow=none;dashed=1;html=1;strokeColor=#9673a6;strokeWidth=2;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="135" as="sourcePoint" />
+            <mxPoint x="550" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="ll-api" value=""
+          style="endArrow=none;dashed=1;html=1;strokeColor=#82b366;strokeWidth=2;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="950" y="135" as="sourcePoint" />
+            <mxPoint x="950" y="770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ═══════════════════ SEQUENCE MESSAGES ═══════════════════ -->
+
+        <!-- 1. Browser → Keycloak: init login-required -->
+        <mxCell id="m1" value="1. keycloak.init({ onLoad: &apos;login-required&apos;, pkceMethod: &apos;S256&apos; })"
+          style="html=1;strokeColor=#6c8ebf;fontColor=#006EAF;fontStyle=1;fontSize=11;endArrow=block;endFill=1;startArrow=none;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="185" as="sourcePoint" />
+            <mxPoint x="550" y="185" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2. Keycloak → Browser: redirect to login page -->
+        <mxCell id="m2" value="2. 302 → /realms/clinical-demo/login-actions"
+          style="html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=2;fontSize=11;endArrow=open;endFill=0;dashed=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="235" as="sourcePoint" />
+            <mxPoint x="150" y="235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 3. Browser → Keycloak: user submits credentials -->
+        <mxCell id="m3" value="3. POST credentials  (demo / demo)"
+          style="html=1;strokeColor=#6c8ebf;fontColor=#006EAF;fontStyle=1;fontSize=11;endArrow=block;endFill=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="285" as="sourcePoint" />
+            <mxPoint x="550" y="285" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 4. Keycloak → Browser: authorization code -->
+        <mxCell id="m4" value="4. 302 → callback?code=&lt;auth_code&gt;&amp;state=..."
+          style="html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=2;fontSize=11;endArrow=open;endFill=0;dashed=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="335" as="sourcePoint" />
+            <mxPoint x="150" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 5. Browser → Keycloak: code exchange with PKCE verifier -->
+        <mxCell id="m5" value="5. POST /token   code + code_verifier  (PKCE S256)"
+          style="html=1;strokeColor=#6c8ebf;fontColor=#006EAF;fontStyle=1;fontSize=11;endArrow=block;endFill=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="385" as="sourcePoint" />
+            <mxPoint x="550" y="385" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 6. Keycloak → Browser: access token (JWT) -->
+        <mxCell id="m6" value="6. { access_token (RS256 JWT), refresh_token, id_token }"
+          style="html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=2;fontSize=11;endArrow=open;endFill=0;dashed=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="435" as="sourcePoint" />
+            <mxPoint x="150" y="435" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- divider annotation -->
+        <mxCell id="divider" value="keycloak.js stores token - setAuthTokenProvider() attaches it to every Axios request"
+          style="text;html=1;strokeColor=none;fillColor=#fff2cc;align=center;verticalAlign=middle;fontSize=11;rounded=1;strokeColor=#d6b656;"
+          vertex="1" parent="1">
+          <mxGeometry x="200" y="455" width="700" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 7. Browser → NestJS API: API call with Bearer token -->
+        <mxCell id="m7" value="7. GET /api/patients?name=Smith    Authorization: Bearer &lt;JWT&gt;"
+          style="html=1;strokeColor=#82b366;fontColor=#2a6030;fontStyle=1;fontSize=11;endArrow=block;endFill=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="510" as="sourcePoint" />
+            <mxPoint x="950" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 8. NestJS API → Keycloak: fetch JWKS (cached) -->
+        <mxCell id="m8" value="8. GET /realms/clinical-demo/protocol/openid-connect/certs  (cached after first call)"
+          style="html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=2;fontSize=11;endArrow=open;endFill=0;dashed=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="950" y="560" as="sourcePoint" />
+            <mxPoint x="550" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 9. Keycloak → NestJS API: public key set -->
+        <mxCell id="m9" value="9. { keys: [ RS256 public key ] }"
+          style="html=1;strokeColor=#9673a6;fontColor=#6a3492;fontStyle=2;fontSize=11;endArrow=open;endFill=0;dashed=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="605" as="sourcePoint" />
+            <mxPoint x="950" y="605" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- JWT validation note -->
+        <mxCell id="note-validate" value="JwtAuthGuard verifies:&lt;br/&gt;- signature (RS256)&lt;br/&gt;- issuer (realm URL)&lt;br/&gt;- expiry (exp claim)"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=5;"
+          vertex="1" parent="1">
+          <mxGeometry x="760" y="560" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- 10. NestJS API → Browser: response -->
+        <mxCell id="m10" value="10. 200 OK   [ PatientDto[] ]"
+          style="html=1;strokeColor=#82b366;fontColor=#2a6030;fontStyle=2;fontSize=11;endArrow=open;endFill=0;dashed=1;"
+          edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="950" y="665" as="sourcePoint" />
+            <mxPoint x="150" y="665" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Token refresh note -->
+        <mxCell id="note-refresh" value="Token auto-refreshed every 30 s&lt;br/&gt;when expiry &lt; 60 s away&lt;br/&gt;(keycloak.updateToken(60))"
+          style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8f0ff;strokeColor=#9673a6;fontSize=11;align=left;spacingLeft=5;"
+          vertex="1" parent="1">
+          <mxGeometry x="280" y="690" width="230" height="65" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

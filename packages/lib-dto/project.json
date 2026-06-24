@@ -1,0 +1,19 @@
+{
+  "name": "lib-dto",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/lib-dto/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/lib-dto",
+        "main": "packages/lib-dto/src/index.ts",
+        "tsConfig": "packages/lib-dto/tsconfig.lib.json",
+        "assets": ["packages/lib-dto/*.md"]
+      }
+    }
+  }
+}

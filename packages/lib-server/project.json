@@ -1,0 +1,19 @@
+{
+  "name": "lib-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/lib-server/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/lib-server",
+        "main": "packages/lib-server/src/index.ts",
+        "tsConfig": "packages/lib-server/tsconfig.lib.json",
+        "assets": ["packages/lib-server/*.md"]
+      }
+    }
+  }
+}

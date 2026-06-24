@@ -1,0 +1,15 @@
+version: '3.9'
+
+# Build directives - points each service at its Dockerfile.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.build.yml build
+
+services:
+  rest-clinical:
+    build:
+      context: .
+      dockerfile: dockerfiles/rest-clinical.Dockerfile
+
+  ui-clinical:
+    build:
+      context: .
+      dockerfile: dockerfiles/ui-clinical.Dockerfile

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "lib-dto": ["./packages/lib-dto/src/index.ts"],
+      "lib-server": ["./packages/lib-server/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

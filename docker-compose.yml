@@ -1,0 +1,32 @@
+version: '3.9'
+
+# Base service definitions - no host port mappings here.
+# Extend with docker-compose.local.yml for local dev port mappings.
+# Extend with docker-compose.build.yml for image build directives.
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KC_DB: dev-mem
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    # Port mappings in docker-compose.local.yml
+
+  rest-clinical:
+    image: clinical-observations-viewer/rest-clinical:local
+    environment:
+      PORT: '3000'
+      FHIR_BASE_URL: 'https://hapi.fhir.org/baseR4'
+      KEYCLOAK_JWKS_URI: 'http://keycloak:8080/realms/clinical-demo/protocol/openid-connect/certs'
+      KEYCLOAK_ISSUER: 'http://keycloak:8080/realms/clinical-demo'
+    depends_on:
+      - keycloak
+    # Port mappings in docker-compose.local.yml
+
+  ui-clinical:
+    image: clinical-observations-viewer/ui-clinical:local
+    depends_on:
+      - rest-clinical
+    # Port mappings in docker-compose.local.yml

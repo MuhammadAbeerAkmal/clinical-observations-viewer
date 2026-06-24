@@ -1,0 +1,39 @@
+image: node:20-alpine
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .yarn/cache/
+    - .nx/cache/
+
+variables:
+  YARN_CACHE_FOLDER: .yarn/cache
+
+before_script:
+  - yarn install --frozen-lockfile
+
+stages:
+  - lint
+  - test:unit
+  - build
+  - test:e2e
+
+lint:
+  stage: lint
+  script:
+    - yarn nx run-many --target=lint --all
+
+test:unit:
+  stage: test:unit
+  script:
+    - yarn nx run-many --target=test --all --ci
+
+build:
+  stage: build
+  script:
+    - yarn nx run-many --target=build --all
+  artifacts:
+    paths:
+      - packages/*/dist/
+    expire_in: 1 hour
