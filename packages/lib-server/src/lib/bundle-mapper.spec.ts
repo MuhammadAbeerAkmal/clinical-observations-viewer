@@ -40,7 +40,7 @@ describe('mapBundleToPatients', () => {
   it('maps FHIR Patient entries to PatientDto', () => {
     const result = mapBundleToPatients(patientBundle);
     expect(result).toEqual([
-      { id: 'p1', name: 'Test Patient', gender: 'male', birthDate: '1980-01-15' },
+      { id: 'p1', name: 'John Smith', gender: 'male', birthDate: '1980-01-15' },
     ]);
   });
 
